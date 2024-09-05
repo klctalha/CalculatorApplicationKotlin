@@ -74,7 +74,11 @@ class MainActivity : AppCompatActivity() {
 
     fun equals(view: View) {
         try {
-            val expressionText = clickValue
+            val expressionText = clickValue ?: ""
+            if (expressionText.isBlank()) {
+                Toast.makeText(view.context, "Enter a valid expression.", Toast.LENGTH_SHORT).show()
+                return
+            }
             val expression = ExpressionBuilder(expressionText).build()
             val result = expression.evaluate()
             val longResult = result.toLong()
@@ -87,6 +91,7 @@ class MainActivity : AppCompatActivity() {
             resultDisplay = true
         } catch (e: Exception) {
             Log.e("EvaluationError", "Error evaluating expression: ${e.message}")
+            binding.resultView.text="Error"
         }
     }
 }
